@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/09 19:35:30 by anestor           #+#    #+#             */
-/*   Updated: 2018/02/21 18:25:20 by anestor          ###   ########.fr       */
+/*   Updated: 2018/02/21 19:51:11 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,16 @@ int		filler(void)
 		make_list(data, &list);
 	//	check_coord(data, ((t_xy *)list->content)->x, ((t_xy *)list->content)->y);
 		while (list != NULL && check_coord(data, ((t_xy *)list->content)->x, ((t_xy *)list->content)->y) != 1)
+		{
+		//	dprintf(2, "%d\n", ((t_xy *)list->content)->z);
 			list = list->next;
+		}
 		if (list == NULL)
 			dprintf(1, "0 0\n");
 		//if (check_place(data, ((t_xy *)list->content)->x, ((t_xy *)list->content)->y) == 1)
 		//	dprintf(1, "%d %d\n", ((t_xy *)list->content)->y, ((t_xy *)list->content)->x);
+	//	if (check_place(data, 2, 7) == 1)
+	//		dprintf(1, "%d %d\n", 7, 2);
 		clear_filler(data);
 	}
 	ft_memdel((void **)&data);

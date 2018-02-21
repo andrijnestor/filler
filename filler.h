@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/09 19:33:39 by anestor           #+#    #+#             */
-/*   Updated: 2018/02/21 17:41:16 by anestor          ###   ########.fr       */
+/*   Updated: 2018/02/21 19:51:09 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ typedef struct	s_xy
 {
 	int			x;
 	int			y;
+	int			z;
 }				t_xy;
 
 typedef struct	s_flr

@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 17:06:14 by anestor           #+#    #+#             */
-/*   Updated: 2018/02/21 18:39:00 by anestor          ###   ########.fr       */
+/*   Updated: 2018/02/21 19:04:49 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,13 @@ int		check_coord(t_flr *data, int x, int y)
 		while (i.x != data->pc_x)
 		{
 			if (data->piece[i.y][i.x] == '*')
-			{
 				if (x - i.x >= 0 && x - i.x <= data->mp_x - data->pc_x &&
 					y - i.y >= 0 && y - i.y <= data->mp_y - data->pc_y)
 					if (check_place(data, x - i.x, y - i.y) == 1)
 					{
-						dprintf(1, "%d %d\n", y - i.y, x - i.x);
+						dprintf(1, "%d %d\n", y - i.y, x - i.x); //
 						return (1);
 					}
-			}
 			i.x++;
 		}
 		i.y++;
