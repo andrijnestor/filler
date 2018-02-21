@@ -6,7 +6,7 @@
 #    By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/02/09 19:34:27 by anestor           #+#    #+#              #
-#    Updated: 2018/02/09 20:05:26 by anestor          ###   ########.fr        #
+#    Updated: 2018/02/21 14:40:31 by anestor          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,8 @@ EXT					= filler.h
 
 SRC					=
 SRC					+= main.c
+SRC					+= read.c
+SRC					+= list.c
 
 OBJ					= $(patsubst %.c,$(OBJ_DIR)%.o,$(SRC))
 .SILENT:
