@@ -6,26 +6,11 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/09 19:35:30 by anestor           #+#    #+#             */
-/*   Updated: 2018/02/21 14:51:27 by anestor          ###   ########.fr       */
+/*   Updated: 2018/02/21 18:25:20 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
-#include <stdio.h>
-/*
-int		read(void)
-{
-	int		fd;
-	char	*line1;
-	char	*line2;
-	char	*map;
-	char	*piece;
-
-	fd = 0;
-	get_nex_line(fd, &line1);
-	
-}
-*/
 
 void	print_filler(t_flr *data, int fd)
 {
@@ -71,13 +56,14 @@ int		filler(void)
 	while (read_filler(data))
 	{
 		print_filler(data, fd); ///
-		make_list(data, list);
-		while (list != NULL)
-		{
-			dprintf(fd, "%d ", list->content->x);
+		make_list(data, &list);
+	//	check_coord(data, ((t_xy *)list->content)->x, ((t_xy *)list->content)->y);
+		while (list != NULL && check_coord(data, ((t_xy *)list->content)->x, ((t_xy *)list->content)->y) != 1)
 			list = list->next;
-		}
-		write(1, "8 2\n", 4);
+		if (list == NULL)
+			dprintf(1, "0 0\n");
+		//if (check_place(data, ((t_xy *)list->content)->x, ((t_xy *)list->content)->y) == 1)
+		//	dprintf(1, "%d %d\n", ((t_xy *)list->content)->y, ((t_xy *)list->content)->x);
 		clear_filler(data);
 	}
 	ft_memdel((void **)&data);
