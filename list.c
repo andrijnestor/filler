@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 14:34:25 by anestor           #+#    #+#             */
-/*   Updated: 2018/02/21 19:51:12 by anestor          ###   ########.fr       */
+/*   Updated: 2018/02/22 14:59:17 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,23 @@ void	make_list(t_flr *data, t_list **list)
 			{
 				temp.x = i.x - XMO;
 				temp.y = i.y - YMO;
-				temp.z = (i.x - XMO - 1) * (i.x - XMO + 1) * (i.y - YMO - 1) * (i.y - YMO + 1);
-		//		dprintf(2, "%d\n", temp.z);
-				if (temp.z < 0)
+	//		temp.z = (temp.x + 1) * (data->mp_x - temp.x) * (temp.y + 1) * (data->mp_y - temp.y);
+//				temp.z = EAST(temp.x + 1, temp.y + 1, data->mp_y);
+
+				temp.z = NORTH(temp.x + 1, temp.y + 1, data->mp_x);
+
+			//	temp.z = NE(temp.x + 1, temp.y + 1, data->mp_y);
+			//	dprintf(3, "%d %d %d\n", temp.y, temp.x, temp.z);
+			/*
+				if (data->map[data->mp_y / 2][data->mp_x / 2] == 'O'
+				|| data->map[data->mp_y / 2][data->mp_x / 2] == 'X')
 					temp.z *= -1;
+			*/
+				//		dprintf(2, "%d\n", temp.z);
+			//	if (temp.z <= 0)
+			//		dprintf(2, "%d\n", temp.z);
+			//	if (temp.z < 0)
+			//		temp.z *= -1;
 				lst_add_sort(list, ft_lstnew(&temp, sizeof(t_xy)));
 //				ft_lstadd(list, ft_lstnew(&temp, sizeof(t_xy)));
 			}

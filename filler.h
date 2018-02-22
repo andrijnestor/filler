@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/09 19:33:39 by anestor           #+#    #+#             */
-/*   Updated: 2018/02/21 19:51:09 by anestor          ###   ########.fr       */
+/*   Updated: 2018/02/22 14:59:21 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,14 @@
 # include "libft.h"
 # define XMO 4
 # define YMO 1
+# define NORTH(x, y, n) n * ((x >= n / 2) ? (n + 1 - x) : x) + n + 1 - y
+# define SOUTH(x, y, n) n * ((x >= n / 2) ? (n + 1 - x) : x) + y
+# define EAST(x, y, n) x + n * ((y >= n / 2) ? (n + 1 - y) : y)
+# define WEST(x, y, n) n + 1 - x + n * ((y >= n / 2) ? (n + 1 - y) : y)
+# define NE(x, y, n) x + n * (n + 1 - y)
+# define SE(x, y, n) x + n * y
+# define NW(x, y, n) n + 1 - x + n * (n + 1 - y)
+# define SW(x, y, n) n + 1 - x + n * y
 
 # include <stdio.h>
 
