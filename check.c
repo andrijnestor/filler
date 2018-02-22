@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 17:06:14 by anestor           #+#    #+#             */
-/*   Updated: 2018/02/21 19:04:49 by anestor          ###   ########.fr       */
+/*   Updated: 2018/02/22 20:40:13 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,3 +65,30 @@ int		check_coord(t_flr *data, int x, int y)
 	}
 	return (0);
 }
+
+/*
+int		check_coord(t_flr *data, int x, int y)
+{
+	t_xy	i;
+
+	i.y = data->pc_y - 1;
+	while (i.y != -1)
+	{
+		i.x = data->pc_x - 1;
+		while (i.x != -1)
+		{
+			if (data->piece[i.y][i.x] == '*')
+				if (x - i.x >= 0 && x - i.x <= data->mp_x - data->pc_x &&
+					y - i.y >= 0 && y - i.y <= data->mp_y - data->pc_y)
+					if (check_place(data, x - i.x, y - i.y) == 1)
+					{
+						dprintf(1, "%d %d\n", y - i.y, x - i.x); //
+						return (1);
+					}
+			i.x--;
+		}
+		i.y--;
+	}
+	return (0);
+}
+*/
