@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/09 19:35:30 by anestor           #+#    #+#             */
-/*   Updated: 2018/02/24 18:18:27 by anestor          ###   ########.fr       */
+/*   Updated: 2018/02/24 18:57:49 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,38 @@ int		get_player(t_flr *data, int fd) ///
 	ft_memdel((void **)&plr);
 	return (1);
 }
+/*
+void	attack(t_flr *data, t_list **list)
+{
+	int		z;
+//	int		n_z;
+	t_xy	reg;
+	t_xy	max;
+	t_list	*tmp;
+	char 	plr;
+
+	z = 0;
+	max.x = 0;
+	max.y = 0;
+	plr = (data->player == 0) ? 'O' : 'X';
+	while (*list != NULL)
+	{
+		reg.x = ((t_xy *)(*list)->content)->x;
+		reg.y = ((t_xy *)(*list)->content)->y;
+		if (z <= NE(reg.x, reg.y, data->mp_x))
+		{
+			z = NE(reg.x, reg.y, data->mp_x);
+			max.x = reg.x;
+			max.y = reg.y;
+		}
+		tmp = *list;
+		*list = (*list)->next;
+		ft_memdel((void **)&tmp->content);
+		ft_memdel((void **)&tmp->content);
+	}
+	dprintf(1, "%d %d\n", max.y, max.x);
+}
+*/
 
 void	attack(t_flr *data, t_list **list)
 {

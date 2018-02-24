@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 17:06:14 by anestor           #+#    #+#             */
-/*   Updated: 2018/02/24 18:07:36 by anestor          ###   ########.fr       */
+/*   Updated: 2018/02/24 18:55:32 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ int		check_place(t_flr *data, int x, int y)
 
 int		check_coord(t_flr *data, int x, int y)
 {
-	if (x >= -data->pre.x && x <= data->mp_x - data->pc_x + data->post.x &&
-		y >= -data->pre.y && y <= data->mp_y - data->pc_y + data->post.y)
+	if (x >= -data->pre.x && x <= data->mp_x - data->pc_x - data->post.x &&
+		y >= -data->pre.y && y <= data->mp_y - data->pc_y)
 		if (check_place(data, x, y))
 			return (1);
 	return (0);

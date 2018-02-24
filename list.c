@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 14:34:25 by anestor           #+#    #+#             */
-/*   Updated: 2018/02/24 18:14:16 by anestor          ###   ########.fr       */
+/*   Updated: 2018/02/24 18:55:21 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	make_list(t_flr *data, t_list **list)
 
 	plr = (data->player == 0) ? 'O' : 'X';
 	i.y = -data->pre.y;
-	while (i.y != data->mp_y + data->post.y)
+	while (i.y != data->mp_y)
 	{
 		i.x = -data->pre.x;
 		while (i.x != data->mp_x + data->post.x)
