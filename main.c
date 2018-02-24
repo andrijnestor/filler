@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/09 19:35:30 by anestor           #+#    #+#             */
-/*   Updated: 2018/02/21 19:51:11 by anestor          ###   ########.fr       */
+/*   Updated: 2018/02/24 18:18:27 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,76 @@ int		get_player(t_flr *data, int fd) ///
 	return (1);
 }
 
+void	attack(t_flr *data, t_list **list)
+{
+	t_xy	max;
+	t_list	*tmp;
+	char	plr;
+
+	plr = (data->player == 0) ? 'O' : 'X';
+	if (!check_map_x(data, data->mp_x - 1, plr))
+	{
+		max.x = -data->pre.x;
+		max.y = data->mp_y - 1;
+		while (*list != NULL)
+		{
+			if (((t_xy *)(*list)->content)->x >= max.x)
+			{
+				if (((t_xy *)(*list)->content)->y <= max.y)
+				{
+					max.x = ((t_xy *)(*list)->content)->x;
+					max.y = ((t_xy *)(*list)->content)->y;
+				}
+			}
+			tmp = *list;
+			*list = (*list)->next;
+			ft_memdel((void **)&tmp->content);
+			ft_memdel((void **)&tmp->content);
+		}
+	}
+	else if (!check_map_x(data, 0, plr))
+	{
+		max.x = data->mp_x - 1;
+		max.y = data->mp_y - 1;
+		while (*list != NULL)
+		{
+			if (((t_xy *)(*list)->content)->x <= max.x)
+			{
+			//	if (((t_xy *)(*list)->content)->y >= max.y)
+			//	{
+					max.x = ((t_xy *)(*list)->content)->x;
+					max.y = ((t_xy *)(*list)->content)->y;
+			//	}
+			}
+			tmp = *list;
+			*list = (*list)->next;
+			ft_memdel((void **)&tmp->content);
+			ft_memdel((void **)&tmp->content);
+		}
+	}
+	else
+	{
+		max.x = -data->pre.x;
+		max.y = -data->pre.y;
+		while (*list != NULL)
+		{
+			if (((t_xy *)(*list)->content)->y >= max.y)
+			{
+			//	if (((t_xy *)(*list)->content)->y >= max.y)
+			//	{
+					max.x = ((t_xy *)(*list)->content)->x;
+					max.y = ((t_xy *)(*list)->content)->y;
+			//	}
+			}
+			tmp = *list;
+			*list = (*list)->next;
+			ft_memdel((void **)&tmp->content);
+			ft_memdel((void **)&tmp->content);
+		}
+	}
+	dprintf(1, "%d %d\n", max.y, max.x);
+}
+
 int		filler(void)
 {
 	t_flr	*data;
@@ -54,17 +124,25 @@ int		filler(void)
 	if (!get_player(data, fd)) ///
 		return (0);
 	while (read_filler(data))
-	{
+	{	
+		trim_piece(data);
 		print_filler(data, fd); ///
 		make_list(data, &list);
+		attack(data, &list);
 	//	check_coord(data, ((t_xy *)list->content)->x, ((t_xy *)list->content)->y);
-		while (list != NULL && check_coord(data, ((t_xy *)list->content)->x, ((t_xy *)list->content)->y) != 1)
-		{
-		//	dprintf(2, "%d\n", ((t_xy *)list->content)->z);
-			list = list->next;
-		}
-		if (list == NULL)
-			dprintf(1, "0 0\n");
+	//	while (list != NULL && check_coord(data, ((t_xy *)list->content)->x, ((t_xy *)list->content)->y) != 1)
+	//	{
+	//	if (list != NULL)
+	//		dprintf(1, "%d %d\n", ((t_xy *)list->content)->y, ((t_xy *)list->content)->x);
+	//		list = list->next;
+	//	}	
+	//	if (list == NULL)
+	//		dprintf(1, "0 0\n");
+	//	while (list->next != NULL)
+	//	{
+	//		list = list->next;
+	//		dprintf(2, "%d %d\n", ((t_xy *)list->content)->y, ((t_xy *)list->content)->x);
+	//	}
 		//if (check_place(data, ((t_xy *)list->content)->x, ((t_xy *)list->content)->y) == 1)
 		//	dprintf(1, "%d %d\n", ((t_xy *)list->content)->y, ((t_xy *)list->content)->x);
 	//	if (check_place(data, 2, 7) == 1)

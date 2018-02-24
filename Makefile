@@ -6,7 +6,7 @@
 #    By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/02/09 19:34:27 by anestor           #+#    #+#              #
-#    Updated: 2018/02/21 17:35:28 by anestor          ###   ########.fr        #
+#    Updated: 2018/02/24 18:17:37 by anestor          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRC					+= main.c
 SRC					+= read.c
 SRC					+= list.c
 SRC					+= check.c
+SRC					+= trim_n_check.c
 
 OBJ					= $(patsubst %.c,$(OBJ_DIR)%.o,$(SRC))
 .SILENT:
