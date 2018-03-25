@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/09 19:33:39 by anestor           #+#    #+#             */
-/*   Updated: 2018/03/01 15:27:07 by anestor          ###   ########.fr       */
+/*   Updated: 2018/02/22 20:40:17 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # define SE(x, y, n) x + n * y
 # define NW(x, y, n) n + 1 - x + n * (n + 1 - y)
 # define SW(x, y, n) n + 1 - x + n * y
-# define ABS(x) (x < 0) ? -x : x
 
 # include <stdio.h>
 
@@ -31,6 +30,7 @@ typedef struct	s_xy
 {
 	int			x;
 	int			y;
+	int			z;
 }				t_xy;
 
 typedef struct	s_flr
@@ -44,12 +44,6 @@ typedef struct	s_flr
 	int			pc_x;
 	int			pc_y;
 	char		**piece;
-	t_xy		pre;
-	t_xy		post;
-	t_xy		pmin;
-	t_xy		pmax;
-	t_xy		emin;
-	t_xy		emax;
 }				t_flr;
 
 /*
@@ -72,16 +66,5 @@ void			make_list(t_flr *data, t_list **list);
 
 int				check_place(t_flr *data, int x, int y);
 int				check_coord(t_flr *data, int x, int y);
-int				check_map_x(t_flr *data, int x, char plr);
-int				check_map_y(t_flr *data, int y, char plr);
-int				check_pc_x(t_flr *data, int x);
-int				check_pc_y(t_flr *data, int y);
-
-/*
-** etc
-*/
-
-void			trim_piece(t_flr *data);
-void			min_max(t_flr *data);
 
 #endif

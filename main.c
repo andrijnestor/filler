@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/09 19:35:30 by anestor           #+#    #+#             */
-/*   Updated: 2018/02/24 18:57:49 by anestor          ###   ########.fr       */
+/*   Updated: 2018/03/01 16:04:32 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,55 @@ int		get_player(t_flr *data, int fd) ///
 	ft_memdel((void **)&plr);
 	return (1);
 }
-/*
+
+int		z_calc(t_flr *data, t_xy reg)
+{
+	int		z;
+
+	z = 0;
+	if (data->pmin.y >= data->emin.y)
+	{
+		z = WEST(reg.x, reg.y, data->mp_x);
+		/*
+		if (data->pmin.x >= data->emin.x)
+		{
+	//		NW
+			z = NW(reg.x, reg.y, data->mp_x);
+		}
+		else
+		{
+	//		NE
+			z = NE(reg.x, reg.y, data->mp_x);
+		}
+		*/
+	} 
+	else if (data->pmax.y <= data->emax.y)
+	{
+		z = SOUTH(reg.x, reg.y, data->mp_y);
+		/*
+		if (data->pmax.x <= data->emax.x)
+		{
+	//		SE
+			z = SE(reg.x, reg.y, data->mp_x);
+		}
+		else
+		{
+	//		SW
+			z = SW(reg.x, reg.y, data->mp_x);
+		}
+		*/
+	}
+	else if (data->pmin.x >= data->emin.x)
+	{
+		z = EAST(reg.x, reg.y, data->mp_x);
+	}
+	else if (data->pmax.x >= data->emax.x)
+	{
+		z = NORTH(reg.x, reg.y, data->mp_y);
+	}
+	return (z);
+}
+
 void	attack(t_flr *data, t_list **list)
 {
 	int		z;
@@ -60,9 +108,11 @@ void	attack(t_flr *data, t_list **list)
 	{
 		reg.x = ((t_xy *)(*list)->content)->x;
 		reg.y = ((t_xy *)(*list)->content)->y;
-		if (z <= NE(reg.x, reg.y, data->mp_x))
+	//	if (z <= NE(reg.x, reg.y, data->mp_x))
+		if (z <= z_calc(data, reg))
 		{
-			z = NE(reg.x, reg.y, data->mp_x);
+		//	z = NE(reg.x, reg.y, data->mp_x);
+			z = z_calc(data, reg);
 			max.x = reg.x;
 			max.y = reg.y;
 		}
@@ -73,8 +123,79 @@ void	attack(t_flr *data, t_list **list)
 	}
 	dprintf(1, "%d %d\n", max.y, max.x);
 }
-*/
 
+/*
+void	attack(t_flr *data, t_list **list)
+{
+//	t_xy	min;
+	int		min;
+	int		tmin;
+	t_xy	i;
+	t_xy	p;
+	t_list	*tmp;
+	char	plr;
+
+	plr = (data->player == 0) ? 'O' : 'X';
+	min = data->mp_y + data->mp_x;
+//	min.y = data->mp_y - YMO;
+//	min.x = data->mp_x - XMO;	
+//	min.y = 0;
+//	min.x = 0;
+	p.y = 0;
+	p.x = 0;
+	while (*list != NULL)
+	{
+		i.y = YMO;
+		while (i.y != data->mp_y + YMO)
+		{
+			i.x = XMO;
+			while (i.x != data->mp_x + XMO)
+			{
+	//			dprintf(2, "%d %d %c\n", i.y - YMO, i.x - XMO, data->map[i.y][i.x]);
+				if (data->map[i.y][i.x] != plr && data->map[i.y][i.x] != '.')
+				{
+					tmin = (ABS(((t_xy *)(*list)->content)->x - i.x - XMO)) +
+						(ABS(((t_xy *)(*list)->content)->y - i.y - YMO));
+					if (tmin <= min)
+					{
+						min = tmin;
+						p.y = ((t_xy *)(*list)->content)->y;
+						p.x = ((t_xy *)(*list)->content)->x;
+					}
+					
+				//	dprintf(2, "lol\n");
+		//			if (ABS(((t_xy *)(*list)->content)->x - i.x - XMO) > min.x)
+		//			{
+		//				if (ABS(((t_xy *)(*list)->content)->y - i.y - YMO) > min.y)
+		//				{
+		//					min.x = ((t_xy *)(*list)->content)->x - i.x - XMO;	
+		//					min.y = ((t_xy *)(*list)->content)->y - i.y - YMO;
+		//					p.y = ((t_xy *)(*list)->content)->y;
+		//					p.x = ((t_xy *)(*list)->content)->x;
+		//			//		dprintf(2, "test\n");
+		//			
+		//				}
+		//			}
+					
+				}
+				i.x++;
+			}
+			i.y++;
+		}
+		if ((*list)->next == NULL && p.y == 0 && p.x == 0)
+		{
+			p.y = ((t_xy *)(*list)->content)->y;
+			p.x = ((t_xy *)(*list)->content)->x;
+		}
+		tmp = *list;
+		*list = (*list)->next;
+		ft_memdel((void **)&tmp->content);
+		ft_memdel((void **)&tmp->content);
+	}
+	dprintf(1, "%d %d\n", p.y, p.x);
+}
+*/
+/*
 void	attack(t_flr *data, t_list **list)
 {
 	t_xy	max;
@@ -144,6 +265,35 @@ void	attack(t_flr *data, t_list **list)
 	}
 	dprintf(1, "%d %d\n", max.y, max.x);
 }
+*/
+
+/*
+void	attack(t_flr *data, t_list **list)
+{
+	if (data->pmin.y >= data->emin.y)
+	{
+		if (data->pmin.x >= data->emin.x)
+		{
+	//		NW
+		}
+		else
+		{
+	//		NE
+		}
+	} 
+	else if (data->pmax.y <= data->emax.y)
+	{
+		if (data->pmax.x <= data->emax.x)
+		{
+	//		SE
+		}
+		else
+		{
+	//		SW
+		}
+	}
+}
+*/
 
 int		filler(void)
 {
@@ -160,6 +310,9 @@ int		filler(void)
 		trim_piece(data);
 		print_filler(data, fd); ///
 		make_list(data, &list);
+		min_max(data);
+		dprintf(2, "%d %d %d %d %d %d %d %d\n", data->pmin.x, data->pmin.y, data->pmax.x, data->pmax.y,
+												data->emin.x, data->emin.y, data->emax.x, data->emax.y);
 		attack(data, &list);
 	//	check_coord(data, ((t_xy *)list->content)->x, ((t_xy *)list->content)->y);
 	//	while (list != NULL && check_coord(data, ((t_xy *)list->content)->x, ((t_xy *)list->content)->y) != 1)

@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 17:06:14 by anestor           #+#    #+#             */
-/*   Updated: 2018/03/01 14:44:53 by anestor          ###   ########.fr       */
+/*   Updated: 2018/02/22 20:40:13 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,25 +18,21 @@ int		check_place(t_flr *data, int x, int y)
 	int		x_cnt;
 	int		o_cnt;
 
-	i.y = data->pre.y;
+	i.y = -1;
 	o_cnt = 0;
 	x_cnt = 0;
-	while (i.y != data->pc_y - data->post.y)
+	while (++i.y != data->pc_y)
 	{
-		i.x = data->pre.x;
-		while (i.x != data->pc_x - data->post.x)
-		{
+		i.x = -1;
+		while (++i.x != data->pc_x)
 			if (data->piece[i.y][i.x] == '*')
 			{
-		//		dprintf(2, "i.x: %d i.y: %d x: %d y: %d\n", i.x, i.y, x, y);
+				//dprintf(2, "i.x: %d i.y: %d x: %d y: %d\n", i.x, i.y, x, y);
 				if (data->map[i.y + y + YMO][i.x + x + XMO] == 'X')
 					x_cnt++;
 				else if (data->map[i.y + y + YMO][i.x + x + XMO] == 'O')
 					o_cnt++;
 			}
-			i.x++;
-		}
-		i.y++;
 	}
 	if (data->player == 0 && o_cnt == 1 && x_cnt == 0)
 			return (1);
@@ -45,16 +41,6 @@ int		check_place(t_flr *data, int x, int y)
 	return (0);
 }
 
-int		check_coord(t_flr *data, int x, int y)
-{
-	if (x >= -data->pre.x && x <= data->mp_x - data->pc_x - data->post.x &&
-		y >= -data->pre.y && y <= data->mp_y - data->pc_y - data->post.y)
-		if (check_place(data, x, y))
-			return (1);
-	return (0);
-}
-
-/*
 int		check_coord(t_flr *data, int x, int y)
 {
 	t_xy	i;
@@ -79,7 +65,7 @@ int		check_coord(t_flr *data, int x, int y)
 	}
 	return (0);
 }
-*/
+
 /*
 int		check_coord(t_flr *data, int x, int y)
 {
