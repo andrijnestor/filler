@@ -6,7 +6,7 @@
 #    By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/02/09 19:34:27 by anestor           #+#    #+#              #
-#    Updated: 2018/03/01 15:26:40 by anestor          ###   ########.fr        #
+#    Updated: 2018/03/29 16:45:02 by anestor          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRC					+= list.c
 SRC					+= check.c
 SRC					+= trim_n_check.c
 SRC					+= min_max.c
+SRC					+= enemy_map.c
 
 OBJ					= $(patsubst %.c,$(OBJ_DIR)%.o,$(SRC))
 .SILENT:

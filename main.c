@@ -6,11 +6,47 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/09 19:35:30 by anestor           #+#    #+#             */
-/*   Updated: 2018/03/01 16:04:32 by anestor          ###   ########.fr       */
+/*   Updated: 2018/03/29 19:45:35 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
+
+void	make_rect(t_flr *data)
+{
+	int		i;
+
+	i = 0;
+	while (i < data->pc_y && !check_pc_y(data, i))
+		i++;
+	data->rect.y = i;
+
+	while (i < data->pc_y && check_pc_y(data, i))
+		i++;
+	data->rect.h = i - data->rect.y;
+
+	i = 0;
+	while (i < data->pc_x && !check_pc_x(data, i))
+		i++;
+	data->rect.x = i;
+
+	while (i < data->pc_x && check_pc_x(data, i))
+		i++;
+	data->rect.w = i - data->rect.x;
+
+	/*
+	i = data->pc_y - 1;
+	while (!check_pc_y(data, i) && i > -1)
+		i--;
+	data->rect.h = i - data->rect.y + 1;
+	i = data->pc_x - 1;
+	while (!check_pc_x(data, i) && i > -1)
+		i--;
+	data->rect.w = i - data->rect.x + 1;
+*/
+
+	dprintf(3, "rect x %d y %d h %d w %d\n", data->rect.x, data->rect.y, data->rect.h, data->rect.w);
+}
 
 void	print_filler(t_flr *data, int fd)
 {
@@ -124,176 +160,28 @@ void	attack(t_flr *data, t_list **list)
 	dprintf(1, "%d %d\n", max.y, max.x);
 }
 
-/*
-void	attack(t_flr *data, t_list **list)
+void	print_enemy_map(t_flr *data, int fd)
 {
-//	t_xy	min;
-	int		min;
-	int		tmin;
 	t_xy	i;
-	t_xy	p;
-	t_list	*tmp;
-	char	plr;
+	t_xy	size;
 
-	plr = (data->player == 0) ? 'O' : 'X';
-	min = data->mp_y + data->mp_x;
-//	min.y = data->mp_y - YMO;
-//	min.x = data->mp_x - XMO;	
-//	min.y = 0;
-//	min.x = 0;
-	p.y = 0;
-	p.x = 0;
-	while (*list != NULL)
+	size.x = data->mp_x + 2;
+	size.y = data->mp_y + 2;
+	dprintf(fd, "size x: %d, y: %d\n", size.x, size.y);
+	i.y = 0;
+	while (i.y != size.y)
 	{
-		i.y = YMO;
-		while (i.y != data->mp_y + YMO)
+		i.x = 0;
+		dprintf(fd, "%.4d: ", i.y);
+		while (i.x != size.x)
 		{
-			i.x = XMO;
-			while (i.x != data->mp_x + XMO)
-			{
-	//			dprintf(2, "%d %d %c\n", i.y - YMO, i.x - XMO, data->map[i.y][i.x]);
-				if (data->map[i.y][i.x] != plr && data->map[i.y][i.x] != '.')
-				{
-					tmin = (ABS(((t_xy *)(*list)->content)->x - i.x - XMO)) +
-						(ABS(((t_xy *)(*list)->content)->y - i.y - YMO));
-					if (tmin <= min)
-					{
-						min = tmin;
-						p.y = ((t_xy *)(*list)->content)->y;
-						p.x = ((t_xy *)(*list)->content)->x;
-					}
-					
-				//	dprintf(2, "lol\n");
-		//			if (ABS(((t_xy *)(*list)->content)->x - i.x - XMO) > min.x)
-		//			{
-		//				if (ABS(((t_xy *)(*list)->content)->y - i.y - YMO) > min.y)
-		//				{
-		//					min.x = ((t_xy *)(*list)->content)->x - i.x - XMO;	
-		//					min.y = ((t_xy *)(*list)->content)->y - i.y - YMO;
-		//					p.y = ((t_xy *)(*list)->content)->y;
-		//					p.x = ((t_xy *)(*list)->content)->x;
-		//			//		dprintf(2, "test\n");
-		//			
-		//				}
-		//			}
-					
-				}
-				i.x++;
-			}
-			i.y++;
+			dprintf(fd, "%d ", data->e_map[i.y][i.x]);
+			i.x++;
 		}
-		if ((*list)->next == NULL && p.y == 0 && p.x == 0)
-		{
-			p.y = ((t_xy *)(*list)->content)->y;
-			p.x = ((t_xy *)(*list)->content)->x;
-		}
-		tmp = *list;
-		*list = (*list)->next;
-		ft_memdel((void **)&tmp->content);
-		ft_memdel((void **)&tmp->content);
-	}
-	dprintf(1, "%d %d\n", p.y, p.x);
-}
-*/
-/*
-void	attack(t_flr *data, t_list **list)
-{
-	t_xy	max;
-	t_list	*tmp;
-	char	plr;
-
-	plr = (data->player == 0) ? 'O' : 'X';
-	if (!check_map_x(data, data->mp_x - 1, plr))
-	{
-		max.x = -data->pre.x;
-		max.y = data->mp_y - 1;
-		while (*list != NULL)
-		{
-			if (((t_xy *)(*list)->content)->x >= max.x)
-			{
-				if (((t_xy *)(*list)->content)->y <= max.y)
-				{
-					max.x = ((t_xy *)(*list)->content)->x;
-					max.y = ((t_xy *)(*list)->content)->y;
-				}
-			}
-			tmp = *list;
-			*list = (*list)->next;
-			ft_memdel((void **)&tmp->content);
-			ft_memdel((void **)&tmp->content);
-		}
-	}
-	else if (!check_map_x(data, 0, plr))
-	{
-		max.x = data->mp_x - 1;
-		max.y = data->mp_y - 1;
-		while (*list != NULL)
-		{
-			if (((t_xy *)(*list)->content)->x <= max.x)
-			{
-			//	if (((t_xy *)(*list)->content)->y >= max.y)
-			//	{
-					max.x = ((t_xy *)(*list)->content)->x;
-					max.y = ((t_xy *)(*list)->content)->y;
-			//	}
-			}
-			tmp = *list;
-			*list = (*list)->next;
-			ft_memdel((void **)&tmp->content);
-			ft_memdel((void **)&tmp->content);
-		}
-	}
-	else
-	{
-		max.x = -data->pre.x;
-		max.y = -data->pre.y;
-		while (*list != NULL)
-		{
-			if (((t_xy *)(*list)->content)->y >= max.y)
-			{
-			//	if (((t_xy *)(*list)->content)->y >= max.y)
-			//	{
-					max.x = ((t_xy *)(*list)->content)->x;
-					max.y = ((t_xy *)(*list)->content)->y;
-			//	}
-			}
-			tmp = *list;
-			*list = (*list)->next;
-			ft_memdel((void **)&tmp->content);
-			ft_memdel((void **)&tmp->content);
-		}
-	}
-	dprintf(1, "%d %d\n", max.y, max.x);
-}
-*/
-
-/*
-void	attack(t_flr *data, t_list **list)
-{
-	if (data->pmin.y >= data->emin.y)
-	{
-		if (data->pmin.x >= data->emin.x)
-		{
-	//		NW
-		}
-		else
-		{
-	//		NE
-		}
-	} 
-	else if (data->pmax.y <= data->emax.y)
-	{
-		if (data->pmax.x <= data->emax.x)
-		{
-	//		SE
-		}
-		else
-		{
-	//		SW
-		}
+		dprintf(fd, "\n");
+		i.y++;
 	}
 }
-*/
 
 int		filler(void)
 {
@@ -306,27 +194,57 @@ int		filler(void)
 	if (!get_player(data, fd)) ///
 		return (0);
 	while (read_filler(data))
-	{	
+	{
+		make_rect(data);
 		trim_piece(data);
 		print_filler(data, fd); ///
+	//	make_list(data, &list);
+//		min_max(data);
+	//	dprintf(2, "%d %d %d %d %d %d %d %d\n", data->pmin.x, data->pmin.y, data->pmax.x, data->pmax.y,
+	//											data->emin.x, data->emin.y, data->emax.x, data->emax.y);
+//		attack(data, &list);
+	
+		make_enemy_map(data);
+	//	print_enemy_map(data, fd);
 		make_list(data, &list);
-		min_max(data);
-		dprintf(2, "%d %d %d %d %d %d %d %d\n", data->pmin.x, data->pmin.y, data->pmax.x, data->pmax.y,
-												data->emin.x, data->emin.y, data->emax.x, data->emax.y);
-		attack(data, &list);
 	//	check_coord(data, ((t_xy *)list->content)->x, ((t_xy *)list->content)->y);
 	//	while (list != NULL && check_coord(data, ((t_xy *)list->content)->x, ((t_xy *)list->content)->y) != 1)
+
+//		while (list != NULL)
+//		{
+//			(list != NULL)
+//				dprintf(1, "%d %d\n", ((t_xyz *)list->content)->y, ((t_xyz *)list->content)->x);
+//				dprintf(3, "out %d %d\n", ((t_xyz *)list->content)->y, ((t_xyz *)list->content)->x);
+//			list = list->next;
+//		}	
+		if (list != NULL)
+		{
+			dprintf(1, "%d %d\n", ((t_xyz *)list->content)->y, ((t_xyz *)list->content)->x);
+			dprintf(3, "out %d %d\n", ((t_xyz *)list->content)->y, ((t_xyz *)list->content)->x);
+		}
+	//	while (list != NULL)
 	//	{
-	//	if (list != NULL)
-	//		dprintf(1, "%d %d\n", ((t_xy *)list->content)->y, ((t_xy *)list->content)->x);
+	//		dprintf(3, "out 2 %d %d\n", ((t_xyz *)list->content)->y, ((t_xyz *)list->content)->x);
 	//		list = list->next;
 	//	}	
-	//	if (list == NULL)
-	//		dprintf(1, "0 0\n");
+
+		if (list == NULL)
+		{
+			dprintf(1, "0 0\n");
+			dprintf(3, "out 0 0\n");
+		}
+		t_list	*list_next;
+		while (list->next != NULL)
+		{
+			list_next = list->next;
+			ft_memdel((void **)&list->content);
+			ft_memdel((void **)&list);
+			list = list_next;
+		}
 	//	while (list->next != NULL)
 	//	{
 	//		list = list->next;
-	//		dprintf(2, "%d %d\n", ((t_xy *)list->content)->y, ((t_xy *)list->content)->x);
+	//		dprintf(fd, "%d %d\n", ((t_xyz *)list->content)->y, ((t_xyz *)list->content)->x);
 	//	}
 		//if (check_place(data, ((t_xy *)list->content)->x, ((t_xy *)list->content)->y) == 1)
 		//	dprintf(1, "%d %d\n", ((t_xy *)list->content)->y, ((t_xy *)list->content)->x);
