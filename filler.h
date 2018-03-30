@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/09 19:33:39 by anestor           #+#    #+#             */
-/*   Updated: 2018/03/29 19:21:46 by anestor          ###   ########.fr       */
+/*   Updated: 2018/03/31 01:26:23 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,10 @@
 # define SW(x, y, n) n + 1 - x + n * y
 # define ABS(x) (x < 0) ? -x : x
 # define BORDER 0
-# define E_VALUE 10000000
+# define E_VALUE 1000000
 # define PLR_1 'O'
 # define PLR_2 'X'
+# define F_EM 1
 
 # include <stdio.h>
 
@@ -52,25 +53,31 @@ typedef struct	s_rect
 	int			h;
 }				t_rect;
 
+typedef struct	s_mtx
+{
+	char		*ar;
+	char		**mx;
+	int			w;
+	int			h;
+}				t_mtx;
+
 typedef struct	s_flr
 {
 	int			player;
 	char		*mp;
-	int			mp_x;
-	int			mp_y;
+	int			mp_w;
+	int			mp_h;
 	char		**map;
-	int			**e_map;
+	int			**e_map_1;
+	int			**e_map_2;
+	int			emp_w;
+	int			emp_h;
 	char		*pc;
-	int			pc_x;
-	int			pc_y;
+	int			pc_w;
+	int			pc_h;
 	char		**piece;
 	t_rect		rect;
-	t_xy		pre;
-	t_xy		post;
-	t_xy		pmin; //
-	t_xy		pmax; // 
-	t_xy		emin;// 
-	t_xy		emax;//
+	t_xyz		result;
 }				t_flr;
 
 /*
@@ -95,15 +102,12 @@ int				check_place(t_flr *data, int x, int y);
 int				check_coord(t_flr *data, int x, int y);
 int				check_map_x(t_flr *data, int x, char plr);
 int				check_map_y(t_flr *data, int y, char plr);
-int				check_pc_x(t_flr *data, int x);
-int				check_pc_y(t_flr *data, int y);
+int				check_pc_w(t_flr *data, int x);
+int				check_pc_h(t_flr *data, int y);
 
 /*
 ** etc
 */
-
-void			trim_piece(t_flr *data);
-void			min_max(t_flr *data);
 
 void			make_enemy_map(t_flr * data);
 

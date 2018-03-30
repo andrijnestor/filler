@@ -33,17 +33,17 @@ int		read_filler(t_flr *data)
 
 	if (!get_next_line(0, &data->mp))
 		return (0);
-	set_xy(data->mp, &data->mp_x, &data->mp_y);
-	data->map = ft_memalloc(sizeof(char *) * data->mp_y + 1);
+	set_xy(data->mp, &data->mp_w, &data->mp_h);
+	data->map = ft_memalloc(sizeof(char *) * data->mp_h + 1);
 	i = 0;
-	while (i != data->mp_y + 1)
+	while (i != data->mp_h + 1)
 		get_next_line(0, &data->map[i++]);
 	if (!get_next_line(0, &data->pc))
 		return (0);
-	set_xy(data->pc, &data->pc_x, &data->pc_y);
-	data->piece = ft_memalloc(sizeof(char *) * data->pc_y);
+	set_xy(data->pc, &data->pc_w, &data->pc_h);
+	data->piece = ft_memalloc(sizeof(char *) * data->pc_h);
 	i = 0;
-	while (i != data->pc_y)
+	while (i != data->pc_h)
 		get_next_line(0, &data->piece[i++]);
 	return (1);
 }
@@ -54,12 +54,12 @@ void	clear_filler(t_flr *data)
 
 	ft_memdel((void **)&data->mp);
 	i = 0;
-	while (i != data->mp_y + 1)
+	while (i != data->mp_h + 1)
 		ft_memdel((void **)&data->map[i++]);
 	ft_memdel((void **)&data->map);
 	ft_memdel((void **)&data->pc);
 	i = 0;
-	while (i != data->pc_y)
+	while (i != data->pc_h)
 		ft_memdel((void **)&data->piece[i++]);
 	ft_memdel((void **)&data->piece);
 }
