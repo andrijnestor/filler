@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/09 19:33:39 by anestor           #+#    #+#             */
-/*   Updated: 2018/03/31 01:26:23 by anestor          ###   ########.fr       */
+/*   Updated: 2018/03/31 02:47:13 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,35 +15,14 @@
 # include "libft.h"
 # define XMO 4
 # define YMO 1
-# define NORTH(x, y, n) n * ((x >= n / 2) ? (n + 1 - x) : x) + n + 1 - y
-# define SOUTH(x, y, n) n * ((x >= n / 2) ? (n + 1 - x) : x) + y
-# define EAST(x, y, n) x + n * ((y >= n / 2) ? (n + 1 - y) : y)
-# define WEST(x, y, n) n + 1 - x + n * ((y >= n / 2) ? (n + 1 - y) : y)
-# define NE(x, y, n) x + n * (n + 1 - y)
-# define SE(x, y, n) x + n * y
-# define NW(x, y, n) n + 1 - x + n * (n + 1 - y)
-# define SW(x, y, n) n + 1 - x + n * y
 # define ABS(x) (x < 0) ? -x : x
 # define BORDER 0
-# define E_VALUE 1000000
+# define E_VALUE 1000
 # define PLR_1 'O'
 # define PLR_2 'X'
 # define F_EM 1
 
 # include <stdio.h>
-
-typedef struct	s_xy
-{
-	int			x;
-	int			y;
-}				t_xy;
-
-typedef struct	s_xyz
-{
-	int			x;
-	int			y;
-	int			z;
-}				t_xyz;
 
 typedef struct	s_rect
 {
@@ -68,8 +47,7 @@ typedef struct	s_flr
 	int			mp_w;
 	int			mp_h;
 	char		**map;
-	int			**e_map_1;
-	int			**e_map_2;
+	int			**e_map;
 	int			emp_w;
 	int			emp_h;
 	char		*pc;

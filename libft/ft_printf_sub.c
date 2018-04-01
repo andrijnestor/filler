@@ -6,12 +6,11 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/17 20:05:55 by anestor           #+#    #+#             */
-/*   Updated: 2017/12/18 16:28:41 by anestor          ###   ########.fr       */
+/*   Updated: 2018/03/08 22:41:06 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
 
 /*
 ** printing arguments, return value is len of %*** format chars

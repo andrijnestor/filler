@@ -6,7 +6,7 @@
 #    By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/02/09 19:34:27 by anestor           #+#    #+#              #
-#    Updated: 2018/03/30 18:47:41 by anestor          ###   ########.fr        #
+#    Updated: 2018/03/31 01:43:23 by anestor          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,6 @@ EXT					= filler.h
 SRC					=
 SRC					+= main.c
 SRC					+= read.c
-SRC					+= list.c
 SRC					+= check.c
 SRC					+= check_map_and_pc.c
 SRC					+= enemy_map.c

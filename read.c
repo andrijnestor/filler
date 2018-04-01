@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 12:44:20 by anestor           #+#    #+#             */
-/*   Updated: 2018/03/26 16:11:19 by anestor          ###   ########.fr       */
+/*   Updated: 2018/03/31 02:35:37 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int		read_filler(t_flr *data)
 	set_xy(data->pc, &data->pc_w, &data->pc_h);
 	data->piece = ft_memalloc(sizeof(char *) * data->pc_h);
 	i = 0;
-	while (i != data->pc_h)
+	while (i < data->pc_h)
 		get_next_line(0, &data->piece[i++]);
 	return (1);
 }
@@ -62,4 +62,5 @@ void	clear_filler(t_flr *data)
 	while (i != data->pc_h)
 		ft_memdel((void **)&data->piece[i++]);
 	ft_memdel((void **)&data->piece);
+	ft_del_matrix(data->e_map, data->emp_h);
 }

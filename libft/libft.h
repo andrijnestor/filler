@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libftprintf.h                                      :+:      :+:    :+:   */
+/*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anestor <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/25 13:28:55 by anestor           #+#    #+#             */
-/*   Updated: 2018/02/09 15:40:55 by anestor          ###   ########.fr       */
+/*   Updated: 2018/03/31 01:52:16 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,25 @@ typedef struct		s_list
 	size_t			content_size;
 	struct s_list	*next;
 }					t_list;
+
+typedef struct		s_xy
+{
+	int				x;
+	int				y;
+}					t_xy;
+
+typedef struct		s_xyz
+{
+	int				x;
+	int				y;
+	int				z;
+}					t_xyz;
+
+typedef struct		s_dxy
+{
+	double			x;
+	double			y;
+}					t_dxy;
 
 /*
 ** mem
@@ -119,7 +138,15 @@ char				*ft_uitoa_base(unsigned long long int number, int base);
 int					ft_atoi_base(const char *str, int str_base);
 int					ft_isspace(int c);
 int					ft_isbase(int c, int base);
-double				ft_atod(const char *str);
+
+/*
+** arrays and matrixs
+*/
+
+int					*ft_make_array(int size);
+int					**ft_make_matrix(int y, int x);
+void				ft_del_matrix(int **arr, int y);
+int					**ft_copy_matrix(int **src, t_xy s, t_xy e);
 
 /*
 ** new func
@@ -136,5 +163,7 @@ int					ft_printf(const char *restrict format, ...);
 int					ft_count_words(char const *s, char c);
 int					ft_num_len(long long int num);
 char				*ft_itoa_base_int(int value, int base);
+t_xy				ft_xy(int x, int y);
+t_xyz				ft_xyz(int x, int y, int z);
 
 #endif

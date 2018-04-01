@@ -6,7 +6,7 @@
 #    By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/31 13:41:32 by anestor           #+#    #+#              #
-#    Updated: 2018/02/09 20:09:52 by anestor          ###   ########.fr        #
+#    Updated: 2018/03/31 01:53:16 by anestor          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,7 +78,6 @@ SRC += ft_lstmap.c
 SRC += ft_atoi_base.c
 SRC += ft_itoa_base.c
 SRC += ft_uitoa_base.c
-SRC += ft_atod.c
 SRC += ft_isspace.c
 SRC += ft_isbase.c
 SRC += ft_strtrim_char.c
@@ -97,6 +96,12 @@ SRC += ft_printf_kostyl.c
 SRC += ft_count_words.c
 SRC += ft_num_len.c
 SRC += ft_itoa_base_int.c
+SRC += ft_xy.c
+SRC += ft_xyz.c
+SRC += ft_make_array.c
+SRC += ft_make_matrix.c
+SRC += ft_del_matrix.c
+SRC += ft_copy_matrix.c
 
 O = $(addprefix $(ODIR), $(OBJ))
 
