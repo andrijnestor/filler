@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/09 19:35:30 by anestor           #+#    #+#             */
-/*   Updated: 2018/03/31 13:21:11 by anestor          ###   ########.fr       */
+/*   Updated: 2018/05/19 20:12:36 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void	print_enemy_map(t_flr *data, int fd)
 		dprintf(fd, "\n");
 		i.y++;
 	}
+	dprintf(3, "e_pos x %d y %d\n", data->e_pos.x, data->e_pos.y);
 }
 
 void	make_temp_result(t_flr *data, t_xyz *temp, int y, int x)
@@ -92,30 +93,32 @@ void	make_temp_result(t_flr *data, t_xyz *temp, int y, int x)
 	t_rect	r;
 
 	r = data->rect;
-	if (data->e_map[y + r.y + 1][x + r.x + 1] > temp[0].z)
+	dprintf(3, "is seg here?\n");
+	if (data->e_map[y + r.y][x + r.x] < temp[0].z)
 	{
 		temp[0].x = x;
 		temp[0].y = y;
-		temp[0].z = data->e_map[y + r.y + 1][x + r.x + 1];
+		temp[0].z = data->e_map[y + r.y][x + r.x];
 	}
-	if (data->e_map[y + r.y + 1][x + r.x + 1 + r.w] > temp[1].z)
+	if (data->e_map[y + r.y][x + r.x + r.w] < temp[1].z)
 	{
 		temp[1].x = x;
 		temp[1].y = y;
-		temp[1].z = data->e_map[y + r.y + 1][x + r.x + 1 + r.w];
+		temp[1].z = data->e_map[y + r.y][x + r.x + r.w];
 	}
-	if (data->e_map[y + r.y + 1 + r.h][x + r.x + 1] > temp[2].z)
+	if (data->e_map[y + r.y + r.h][x + r.x] < temp[2].z)
 	{
 		temp[2].x = x;
 		temp[2].y = y;
-		temp[2].z = data->e_map[y + r.y + 1 + r.h][x + r.x + 1];
+		temp[2].z = data->e_map[y + r.y + r.h][x + r.x];
 	}
-	if (data->e_map[y + r.y + 1 + r.h][x + r.x + 1 + r.w] > temp[3].z)
+	if (data->e_map[y + r.y + r.h][x + r.x + r.w] < temp[3].z)
 	{
 		temp[3].x = x;
 		temp[3].y = y;
-		temp[3].z = data->e_map[y + r.y + 1 + r.h][x + r.x + 1 + r.w];
+		temp[3].z = data->e_map[y + r.y + r.h][x + r.x + r.w];
 	}
+	dprintf(3, "no its not\n");
 }
 
 void	make_result(t_flr *data)
@@ -124,16 +127,16 @@ void	make_result(t_flr *data)
 	t_xyz	temp[4];
 	t_rect	r;
 
-	temp[0] = ft_xyz(0, 0, -1);
-	temp[1] = ft_xyz(0, 0, -1);
-	temp[2] = ft_xyz(0, 0, -1);
-	temp[3] = ft_xyz(0, 0, -1);
+	temp[0] = ft_xyz(0, 0, 100000);
+	temp[1] = ft_xyz(0, 0, 100000);
+	temp[2] = ft_xyz(0, 0, 100000);
+	temp[3] = ft_xyz(0, 0, 100000);
 	r = data->rect;
 	i.y = -r.y;
-	while (i.y != data->mp_h)
+	while (i.y != data->mp_h - r.h)
 	{
 		i.x = -r.x;
-		while (i.x != data->mp_w)
+		while (i.x != data->mp_w - r.w)
 		{
 			if (check_coord(data, i.x, i.y) == 1)
 				make_temp_result(data, temp, i.y, i.x);
@@ -150,6 +153,7 @@ void	make_result(t_flr *data)
 		data->result = temp[3];
 	dprintf(3, "x %d y %d z %d\n", data->result.x, data->result.y, data->result.z);
 }
+
 /*
 void	make_result(t_flr *data)
 {
@@ -181,6 +185,34 @@ void	make_result(t_flr *data)
 	dprintf(3, "x %d y %d z %d\n", data->result.x, data->result.y, data->result.z);
 }
 */
+
+void	enemy_pos(t_flr *data)
+{
+	t_xy	i;
+	char	enemy;
+
+	if (data->e_pos.y == 0 && data->e_pos.x == 0)
+	{
+		enemy = (data->player == 0) ? PLR_2 : PLR_1;
+		i.y = YMO;
+		while (i.y != data->mp_h + YMO)
+		{
+			i.x = XMO;
+			while (i.x != data->mp_w + XMO)
+			{
+				if (data->map[i.y][i.x] == enemy)
+				{
+					data->e_pos.x = i.x - XMO;
+					data->e_pos.y = i.y - YMO;
+					return ;
+				}
+				i.x++;
+			}
+			i.y++;
+		}
+	}
+}
+
 int		filler(void)
 {
 	t_flr	*data;
@@ -191,6 +223,7 @@ int		filler(void)
 		return (0);
 	while (read_filler(data))
 	{
+		enemy_pos(data);
 		make_rect(data);
 		print_filler(data, fd); ///
 		make_enemy_map(data);

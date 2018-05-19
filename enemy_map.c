@@ -6,195 +6,136 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/29 16:28:31 by anestor           #+#    #+#             */
-/*   Updated: 2018/03/31 13:30:57 by anestor          ###   ########.fr       */
+/*   Updated: 2018/05/19 21:32:25 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 
-int		set_e_map_value(t_flr * data, int y, int x, t_xy size)
-{
-	if (x == 0 || y == 0)
-		return (BORDER);
-	else if (y == size.y - 1 || x == size.x - 1)
-		return (BORDER);
+int		set_e_map_value(t_flr * data, int y, int x)
+{	
+	if (data->player == 0)
+	{
+		if (data->map[y][x] == (char)PLR_2)
+			return (1);
+		else
+			return (0);
+	}
 	else
 	{
-		if (data->player == 0)
-		{
-			if (data->map[y][x + 2] == PLR_2)
-				return (E_VALUE);
-			else
-				return (0);
-		}
+		if (data->map[y][x] == (char)PLR_1)
+			return (1);
 		else
-		{
-			if (data->map[y][x + 2] == PLR_1)
-				return (E_VALUE);
-			else
-				return (0);
-		}
+			return (0);
 	}
 }
 
-int		calc_position(int **map, int y, int x)
-{
-	int		val;
-
-	val = map[y - 1][x - 1] + map[y][x - 1] + map[y + 1][x - 1];
-	val += map[y - 1][x] + map[y][x] + map[y + 1][x];
-	val += map[y - 1][x + 1] + map[y][x + 1] + map[y + 1][x + 1];
-	val /= 9;
-	return (val);
-}
-
-int		calc_position_2(int **map, int y, int x)
-{
-	int		val;
-	int		min;
-
-	val = 0;
-	min = 0;
-	min = map[y - 1][x - 1];
-	if (min > 0)
-		val = min - F_EM;
-	min = map[y][x - 1];
-	if (min > 0 && min > val)
-		val = min - F_EM;
-	min = map[y + 1][x - 1];
-	if (min > 0 && min > val)
-		val = min - F_EM;
-	min = map[y - 1][x];
-	if (min > 0 && min > val)
-		val = min - F_EM;
-	min = map[y][x];
-	if (min > 0 && min > val)
-		val = min - F_EM;
-	min = map[y + 1][x];
-	if (min > 0 && min > val)
-		val = min - F_EM;
-	min = map[y - 1][x + 1];
-	if (min > 0 && min > val)
-		val = min - F_EM;
-	min = map[y][x + 1];
-	if (min > 0 && min > val)
-		val = min - F_EM;
-	min = map[y + 1][x + 1];
-	if (min > 0 && min > val)
-		val = min - F_EM;
-	return (val);
-}
-
-void	calc_enemy_map(int **map, t_xy size)
+void	mnhtn_enemy(t_flr *data)
 {
 	t_xy	i;
 
-	i.y = 1;
-	while (i.y != size.y - 1)
+	i.y = 0;
+	while (i.y != data->emp_h)
 	{
-		i.x = 1;
-		while (i.x != size.x - 1)
+		i.x = 0;
+		while (i.x != data->emp_w)
 		{
-			map[i.y][i.x] = calc_position(map, i.y, i.x);
+			if (data->e_map[i.y][i.x] == 1)
+			{
+				data->e_map[i.y][i.x] = 
+					(ABS((i.y - data->e_pos.y + data->rect.y))) +
+					(ABS((i.x - data->e_pos.x + data->rect.x)));
+			}
 			i.x++;
 		}
 		i.y++;
 	}
 }
 
-void	calc_enemy_map_2(int **map, t_xy size)
+int		check_naked(t_flr *data, t_xy i)
 {
-	t_xy	i;
+	t_xy	s;
+	t_xy	e;
+	t_xy	n;
+	int		test;
 
-	i.y = size.y - 2;
-	while (i.y != 0)
+	test = 0;
+	s = ft_xy(i.x - 1, i.y - 1);
+	e = ft_xy(i.x + 1, i.y + 1);
+	(s.y < YMO) ? s.y = YMO : 0;
+	(s.x < XMO) ? s.x = XMO : 0;
+	(e.y >= data->mp_h + YMO) ? e.y = data->mp_h + YMO - 1 : 0;
+	(e.x >= data->mp_w + XMO) ? e.x = data->mp_w + XMO - 1 : 0;
+	n.y = s.y;
+	while (n.y <= e.y)
 	{
-		i.x = size.x - 2;
-		while (i.x != 0)
+		n.x = s.x;
+		while (n.x <= e.x)
 		{
-			map[i.y][i.x] = calc_position(map, i.y, i.x);
-			i.x--;
+			if (data->map[n.y][n.x] != (char)PLR_1 &&
+					data->map[n.y][n.x] != (char)PLR_2)
+				test++;
+			n.x++;
 		}
-		i.y--;
+		n.y++;
 	}
+	if (test < 3 && test > 0)
+		return (1);
+	return (0);
 }
 
-
-void	calc_enemy_map_y(int **map, t_xy size)
+t_xy	find_highest_pos(t_flr *data)
 {
+	int		highest;
+	t_xy	pos;
 	t_xy	i;
-	int		tmp;
+	char	enemy;
 
-	i.x = 1;
-	while (i.x != size.x - 1)
+	pos = ft_xy(0, 0);
+	highest = 0;
+	enemy = (data->player == 0) ? PLR_2 : PLR_1;
+	i.y = YMO;
+	while (i.y != data->mp_h + YMO)
 	{
-		i.y = 1;
-		while (map[i.y][i.x] == 0 && i.y != size.y - 1)
-			i.y++;
-		if (i.y != size.y - 1)
+		i.x = XMO;
+		while (i.x != data->mp_w + XMO)
 		{
-			tmp = map[i.y][i.x];
-			while (i.y != 0)
-			{
-				map[i.y][i.x] = tmp--;
-			//	if (map[i.y][i.x] > E_VALUE - 3 && map[i.y][i.x] < E_VALUE - 1)
-			//		map[i.y][i.x] = E_VALUE * 2;
-				i.y--;
-			}
-			map[i.y][i.x] = tmp;
-			while (map[i.y][i.x] != 0 && i.y != size.y - 1)
-				i.y++;
-			if (i.y != size.y - 1)
-			{
-				tmp = map[i.y - 1][i.x];
-				while (i.y != size.y - 1)
+			if (data->map[i.y][i.x] == enemy)
+				if (check_naked(data, i) &&
+						data->e_map[i.y - YMO + data->rect.y][i.x - XMO + data->rect.x] > highest)  //// >=
 				{
-					map[i.y][i.x] = tmp--;
-			//		if (map[i.y][i.x] > E_VALUE - 3 && map[i.y][i.x] < E_VALUE - 1)
-			//			map[i.y][i.x] = E_VALUE * 2;
-					i.y++;
+					highest = data->e_map[i.y - YMO + data->rect.y][i.x - XMO + data->rect.x];
+					pos = ft_xy(i.x - XMO + data->rect.x, i.y - YMO + data->rect.y);
 				}
-			}
-		}
-		i.x++;
-	}
-}
-
-void	calc_enemy_map_x(int **map, t_xy size)
-{
-	t_xy	i;
-	int		tmp;
-
-	i.y = 1;
-	while (i.y != size.y - 1)
-	{
-		i.x = 1;
-		while (map[i.y][i.x] == 0 && i.x != size.x - 1)
 			i.x++;
-		if (i.x != size.x - 1)
+		}
+		i.y++;
+	}
+//	if (highest < 10 && data->map[data->emp_h / 2][data->emp_w / 2] != enemy)
+//	if (highest < 10)
+//		pos = ft_xy(data->emp_w, data->emp_h / 2);
+//	if (highest == 0)
+//		pos = ft_xy(data->emp_w / 2, data->emp_h / 2);
+	if (highest < 20)
+		pos = ft_xy(data->e_pos.x, data->e_pos.y);
+	dprintf(3, "highest %d enemy %c rect.x %d rect.y %d\n", highest, enemy, data->rect.x, data->rect.y);
+	return (pos);
+}
+
+void	mnhtn_enemy_map(t_flr *data, t_xy place)
+{
+	t_xy	i;
+
+	i.y = 0;
+	while (i.y != data->emp_h)
+	{
+		i.x = 0;
+		while (i.x != data->emp_w)
 		{
-			tmp = map[i.y][i.x];
-			while (i.x != 0)
-			{
-				map[i.y][i.x] = tmp--;
-		//		if (map[i.y][i.x] > E_VALUE - 3 && map[i.y][i.x] < E_VALUE - 1)
-		//			map[i.y][i.x] = E_VALUE * 2;
-				i.x--;
-			}
-			map[i.y][i.x] = tmp;
-			while (map[i.y][i.x] != 0 && i.x != size.x - 1)
-				i.x++;
-			if (i.x != size.x - 1)
-			{
-				tmp = map[i.y][i.x - 1];
-				while (i.x != size.x - 1)
-				{
-					map[i.y][i.x] = tmp--;
-		//			if (map[i.y][i.x] > E_VALUE - 3 && map[i.y][i.x] < E_VALUE - 1)
-		//				map[i.y][i.x] = E_VALUE * 2;
-					i.x++;
-				}
-			}
+			data->e_map[i.y][i.x] = 
+				(ABS((i.y - place.y))) +
+				(ABS((i.x - place.x)));
+			i.x++;
 		}
 		i.y++;
 	}
@@ -205,30 +146,24 @@ void	make_enemy_map(t_flr *data)
 	t_xy	i;
 	t_xy	size;
 
-	data->emp_w = data->mp_w + 2 + data->pc_w - data->rect.w;
-	data->emp_h = data->mp_h + 2 + data->pc_h - data->rect.h;
+	data->emp_w = data->mp_w + data->rect.x;
+	data->emp_h = data->mp_h + data->rect.y;
 	size = ft_xy(data->emp_w, data->emp_h);
 	data->e_map = ft_make_matrix(size.y, size.x);
-	i.y = 0;
-	while (i.y != size.y)
+	i.y = data->rect.y;
+	while (i.y != data->emp_h)
 	{
-		i.x = 0;
-		while (i.x != size.x)
+		i.x = data->rect.x;
+		while (i.x != data->emp_w)
 		{
-			if (i.x > data->rect.x && i.y > data->rect.y &&
-				i.x <= data->rect.x + data->mp_w &&
-				i.y <= data->rect.y + data->mp_h)
-			{
-				data->e_map[i.y][i.x] =
-					set_e_map_value(data, i.y - data->rect.y,
-											i.x - data->rect.x, size);
-			}
+			data->e_map[i.y][i.x] = set_e_map_value(data,
+				i.y - data->rect.y + YMO, i.x - data->rect.x + XMO);
 			i.x++;
 		}
 		i.y++;
 	}
-//	calc_enemy_map(data->e_map, size);
-//	calc_enemy_map_2(data->e_map, size);
-	calc_enemy_map_x(data->e_map, size);
-	calc_enemy_map_y(data->e_map, size);
+	mnhtn_enemy(data);
+	i = find_highest_pos(data);
+	dprintf(3, "highest pos x %d y %d\n", i.x, i.y);
+	mnhtn_enemy_map(data, i);
 }

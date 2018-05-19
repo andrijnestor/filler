@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/09 19:33:39 by anestor           #+#    #+#             */
-/*   Updated: 2018/03/31 02:47:13 by anestor          ###   ########.fr       */
+/*   Updated: 2018/05/19 18:50:28 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # define XMO 4
 # define YMO 1
 # define ABS(x) (x < 0) ? -x : x
-# define BORDER 0
-# define E_VALUE 1000
+//# define BORDER 0
+//# define E_VALUE 1000
 # define PLR_1 'O'
 # define PLR_2 'X'
 # define F_EM 1
@@ -56,6 +56,7 @@ typedef struct	s_flr
 	char		**piece;
 	t_rect		rect;
 	t_xyz		result;
+	t_xy		e_pos;
 }				t_flr;
 
 /*
