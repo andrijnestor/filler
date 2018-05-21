@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/09 19:35:30 by anestor           #+#    #+#             */
-/*   Updated: 2018/05/21 14:41:23 by anestor          ###   ########.fr       */
+/*   Updated: 2018/05/21 15:05:42 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,10 +226,13 @@ int		filler(void)
 		enemy_pos(data);
 		make_rect(data);
 		print_filler(data, fd); ///
-	//	make_enemy_map(data);
-	//	print_enemy_map(data, fd);
-	//	make_result(data);
+		make_enemy_map(data);
+		print_enemy_map(data, fd);
 		make_res(data);
+		
+		print_enemy_map(data, fd);
+		make_result(data);
+	//	make_res(data);
 	//	clear_filler(data);
 		dprintf(3, "%d %d\n", data->result.y, data->result.x);
 		dprintf(1, "%d %d\n", data->result.y, data->result.x);
