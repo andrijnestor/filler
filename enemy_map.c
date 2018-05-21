@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/29 16:28:31 by anestor           #+#    #+#             */
-/*   Updated: 2018/05/21 16:52:19 by anestor          ###   ########.fr       */
+/*   Updated: 2018/05/21 18:04:11 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,7 @@ int		check_naked(t_flr *data, t_xy i)
 	t_xy	s;
 	t_xy	e;
 	t_xy	n;
-	int		test;
 
-	test = 0;
 	s = ft_xy(i.x - 1, i.y - 1);
 	e = ft_xy(i.x + 1, i.y + 1);
 	(s.y < YMO) ? s.y = YMO : 0;
@@ -74,13 +72,11 @@ int		check_naked(t_flr *data, t_xy i)
 		{
 			if (data->map[n.y][n.x] != (char)PLR_1 &&
 					data->map[n.y][n.x] != (char)PLR_2)
-				test++;
+				return (1);
 			n.x++;
 		}
 		n.y++;
 	}
-	if (test < 3 && test > 0)
-		return (1);
 	return (0);
 }
 
@@ -91,7 +87,7 @@ t_xy	find_highest_pos(t_flr *data)
 	t_xy	i;
 	char	enemy;
 
-	pos = ft_xy(0, 0);
+	pos = ft_xy(data->e_pos.x, data->e_pos.y);
 	highest = 0;
 	enemy = (data->player == 0) ? PLR_2 : PLR_1;
 	i.y = YMO;
@@ -101,7 +97,7 @@ t_xy	find_highest_pos(t_flr *data)
 		while (i.x != data->mp_w + XMO)
 		{
 			if (data->map[i.y][i.x] == enemy || data->map[i.y][i.x] == enemy + 32)
-				if (/*check_naked(data, i) &&*/
+				if (check_naked(data, i) &&
 						data->e_map[i.y - YMO + data->rect.y][i.x - XMO + data->rect.x] > highest)  //// >=
 				{
 					highest = data->e_map[i.y - YMO + data->rect.y][i.x - XMO + data->rect.x];
@@ -116,8 +112,6 @@ t_xy	find_highest_pos(t_flr *data)
 //		pos = ft_xy(data->emp_w, data->emp_h / 2);
 //	if (highest == 0)
 //		pos = ft_xy(data->emp_w / 2, data->emp_h / 2);
-//	if (highest < 10)
-//		pos = ft_xy(data->e_pos.x, data->e_pos.y);
 	dprintf(3, "highest %d enemy %c rect.x %d rect.y %d\n", highest, enemy, data->rect.x, data->rect.y);
 	return (pos);
 }
