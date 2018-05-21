@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/29 16:28:31 by anestor           #+#    #+#             */
-/*   Updated: 2018/05/19 21:32:25 by anestor          ###   ########.fr       */
+/*   Updated: 2018/05/21 14:54:59 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,4 +166,110 @@ void	make_enemy_map(t_flr *data)
 	i = find_highest_pos(data);
 	dprintf(3, "highest pos x %d y %d\n", i.x, i.y);
 	mnhtn_enemy_map(data, i);
+}
+
+void	calc_closest(t_xy place, t_xy offset, t_flr *data)
+{
+	t_xy	i;
+	char	enemy;
+	int		length;
+
+	enemy = (data->player == 0) ? PLR_2 : PLR_1;
+	i.y = YMO;
+	while (i.y != data->mp_h + YMO)
+	{
+		i.x = XMO;
+		while (i.x != data->mp_w + XMO)
+		{
+			if (data->map[i.y][i.x] == enemy)
+			{
+				length = (ABS((i.y - (place.y + offset.y)))) +
+							(ABS((i.x - (place.x + offset.x))));
+				if (place.y < data->result.y && data->result.y != 0)
+				{
+					data->result.x = place.x;
+					data->result.y = place.y;
+					data->result.z = length;
+					dprintf(3, "less y\n");
+				}
+			//	else if (length == data->result.z && place.x < data->result.x && data->result.x != 0)
+			//	{
+			//		data->result.x = place.x;
+			//		data->result.y = place.y;
+			//		data->result.z = length;
+			//	}
+				else if (length < data->result.z)
+				{
+					data->result.x = place.x;
+					data->result.y = place.y;
+					data->result.z = length;
+					dprintf(3, "x %d y %d x1 %d y1 %d z %d\n", i.x, i.y, place.x + offset.x, place.y + offset.y, length);
+				}
+			}
+			i.x++;
+		}
+		i.y++;
+	}
+}
+
+void	check_closest(t_xy place, t_flr *data)
+{
+	t_xy	i;
+
+	i.y = data->rect.y;
+	while (i.y != data->rect.y + data->rect.h)
+	{
+		i.x = data->rect.x;
+		while (i.x != data->rect.x + data->rect.w)
+		{
+			if (data->piece[i.y][i.x] == '*')
+				calc_closest(place, i, data);
+			i.x++;
+		}
+		i.y++;
+	}
+}
+/*
+void	make_res(t_flr *data)
+{
+	t_xy	i;
+
+	i.y = -data->rect.y;
+	data->result = ft_xyz(0, 0, INT_MAX);
+	while (i.y != data->mp_h)
+	{
+		i.x = -data->rect.x;
+		while (i.x != data->mp_w)
+		{
+			if (check_coord(data, i.x, i.y))
+				check_closest(i, data);
+//			else
+//				dprintf(3, "check_coord fail\n");
+			i.x++;
+		}
+		i.y++;
+	}
+	dprintf(3, "ZET = %d\n", data->result.z);
+}
+*/
+void	make_res(t_flr *data)
+{
+	t_xy	i;
+
+	i.y = data->mp_h - 1;
+	data->result = ft_xyz(0, 0, INT_MAX);
+	while (i.y != -data->rect.y - 1)
+	{
+		i.x = data->mp_w - 1;
+		while (i.x != -data->rect.x - 1)
+		{
+			if (check_coord(data, i.x, i.y))
+				check_closest(i, data);
+//			else
+//				dprintf(3, "check_coord fail\n");
+			i.x--;
+		}
+		i.y--;
+	}
+	dprintf(3, "ZET = %d\n", data->result.z);
 }

@@ -6,13 +6,14 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/09 19:33:39 by anestor           #+#    #+#             */
-/*   Updated: 2018/05/19 18:50:28 by anestor          ###   ########.fr       */
+/*   Updated: 2018/05/21 13:57:46 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FILLER_H
 # define FILLER_H
 # include "libft.h"
+# include <limits.h>
 # define XMO 4
 # define YMO 1
 # define ABS(x) (x < 0) ? -x : x
@@ -89,5 +90,8 @@ int				check_pc_h(t_flr *data, int y);
 */
 
 void			make_enemy_map(t_flr * data);
+
+
+void			make_res(t_flr *data);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 17:06:14 by anestor           #+#    #+#             */
-/*   Updated: 2018/03/30 18:38:25 by anestor          ###   ########.fr       */
+/*   Updated: 2018/05/21 13:13:25 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ int		check_coord(t_flr *data, int x, int y)
 	r = data->rect;
 	map.x = data->mp_w;
 	map.y = data->mp_h;
-	if (x >= -r.x && x <= map.x - r.w - r.x &&
-		y >= -r.y && y <= map.y - r.h - r.y)
+	if (x >= -r.x && x <= map.x - r.w - r.x &&   ///rly?
+		y >= -r.y && y <= map.y - r.h - r.y)    ///rly?
 		if (check_place(data, x, y))
 			return (1);
 	return (0);
