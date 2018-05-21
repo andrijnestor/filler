@@ -6,14 +6,14 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/29 16:28:31 by anestor           #+#    #+#             */
-/*   Updated: 2018/05/21 16:52:19 by anestor          ###   ########.fr       */
+/*   Updated: 2018/05/21 18:21:20 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 
-int		set_e_map_value(t_flr * data, int y, int x)
-{	
+int		set_e_map_value(t_flr *data, int y, int x)
+{
 	if (data->player == 0)
 	{
 		if (data->map[y][x] == (char)PLR_2)
@@ -42,7 +42,7 @@ void	mnhtn_enemy(t_flr *data)
 		{
 			if (data->e_map[i.y][i.x] == 1)
 			{
-				data->e_map[i.y][i.x] = 
+				data->e_map[i.y][i.x] =
 					(ABS((i.y - data->e_pos.y + data->rect.y))) +
 					(ABS((i.x - data->e_pos.x + data->rect.x)));
 			}
@@ -57,9 +57,7 @@ int		check_naked(t_flr *data, t_xy i)
 	t_xy	s;
 	t_xy	e;
 	t_xy	n;
-	int		test;
 
-	test = 0;
 	s = ft_xy(i.x - 1, i.y - 1);
 	e = ft_xy(i.x + 1, i.y + 1);
 	(s.y < YMO) ? s.y = YMO : 0;
@@ -74,13 +72,11 @@ int		check_naked(t_flr *data, t_xy i)
 		{
 			if (data->map[n.y][n.x] != (char)PLR_1 &&
 					data->map[n.y][n.x] != (char)PLR_2)
-				test++;
+				return (1);
 			n.x++;
 		}
 		n.y++;
 	}
-	if (test < 3 && test > 0)
-		return (1);
 	return (0);
 }
 
@@ -91,7 +87,7 @@ t_xy	find_highest_pos(t_flr *data)
 	t_xy	i;
 	char	enemy;
 
-	pos = ft_xy(0, 0);
+	pos = ft_xy(data->e_pos.x, data->e_pos.y);
 	highest = 0;
 	enemy = (data->player == 0) ? PLR_2 : PLR_1;
 	i.y = YMO;
@@ -100,25 +96,17 @@ t_xy	find_highest_pos(t_flr *data)
 		i.x = XMO;
 		while (i.x != data->mp_w + XMO)
 		{
-			if (data->map[i.y][i.x] == enemy || data->map[i.y][i.x] == enemy + 32)
-				if (/*check_naked(data, i) &&*/
-						data->e_map[i.y - YMO + data->rect.y][i.x - XMO + data->rect.x] > highest)  //// >=
+			if (data->map[i.y][i.x] == enemy)
+				if (check_naked(data, i) &&
+					data->e_map[FU_NORM_Y][FU_NORM_X] > highest)
 				{
-					highest = data->e_map[i.y - YMO + data->rect.y][i.x - XMO + data->rect.x];
-					pos = ft_xy(i.x - XMO + data->rect.x, i.y - YMO + data->rect.y);
+					highest = data->e_map[FU_NORM_Y][FU_NORM_X];
+					pos = ft_xy(FU_NORM_X, FU_NORM_Y);
 				}
 			i.x++;
 		}
 		i.y++;
 	}
-//	if (highest < 10 && data->map[data->emp_h / 2][data->emp_w / 2] != enemy)
-//	if (highest < 10)
-//		pos = ft_xy(data->emp_w, data->emp_h / 2);
-//	if (highest == 0)
-//		pos = ft_xy(data->emp_w / 2, data->emp_h / 2);
-//	if (highest < 10)
-//		pos = ft_xy(data->e_pos.x, data->e_pos.y);
-	dprintf(3, "highest %d enemy %c rect.x %d rect.y %d\n", highest, enemy, data->rect.x, data->rect.y);
 	return (pos);
 }
 
@@ -132,7 +120,7 @@ void	mnhtn_enemy_map(t_flr *data, t_xy place)
 		i.x = 0;
 		while (i.x != data->emp_w)
 		{
-			data->e_map[i.y][i.x] = 
+			data->e_map[i.y][i.x] =
 				(ABS((i.y - place.y))) +
 				(ABS((i.x - place.x)));
 			i.x++;
@@ -164,7 +152,6 @@ void	make_enemy_map(t_flr *data)
 	}
 	mnhtn_enemy(data);
 	i = find_highest_pos(data);
-	dprintf(3, "highest pos x %d y %d\n", i.x, i.y);
 	mnhtn_enemy_map(data, i);
 }
 
@@ -183,17 +170,11 @@ void	calc_closest(t_xy place, t_xy offset, t_flr *data, int *len)
 		{
 			if (data->map[i.y][i.x] == enemy)
 			{
-				length = (ABS((i.y - YMO - (place.y + offset.y - data->rect.y)))) +
-							(ABS((i.x - XMO - (place.x + offset.x - data->rect.x))));
-				if (length < *len)
-				{
+				length =
+					(ABS((i.y - YMO - (place.y + offset.y - data->rect.y)))) +
+					(ABS((i.x - XMO - (place.x + offset.x - data->rect.x))));
+				if (length <= *len)  /// <
 					*len = length;
-				//	if (length < 2)
-				//	{
-						dprintf(3, "x %d y %d x1 %d y1 %d z %d\n",
-							i.x - XMO, i.y - YMO, place.x + offset.x, place.y + offset.y, length);
-				//	}
-				}
 			}
 			i.x++;
 		}
@@ -222,12 +203,11 @@ int		check_closest(t_xy place, t_flr *data)
 	return (len);
 }
 
-void	make_res(t_flr *data)
+void	update_enemy_map(t_flr *data)
 {
 	t_xy	i;
 
 	i.y = -data->rect.y;
-//	data->result = ft_xyz(0, 0, INT_MAX);
 	while (i.y != data->mp_h)
 	{
 		i.x = -data->rect.x;
@@ -236,11 +216,8 @@ void	make_res(t_flr *data)
 			if (check_coord(data, i.x, i.y))
 				if (check_closest(i, data) < 4)
 					data->e_map[i.y + data->rect.y][i.x + data->rect.x] = 0;
-//				data->e_map[i.y + data->rect.y][i.x + data->rect.x] *= check_closest(i, data);
 			i.x++;
 		}
 		i.y++;
 	}
-//	dprintf(3, "ZET = %d\n", data->result.z);
 }
-

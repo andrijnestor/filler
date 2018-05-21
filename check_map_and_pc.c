@@ -6,12 +6,12 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/30 18:47:14 by anestor           #+#    #+#             */
-/*   Updated: 2018/03/30 18:47:22 by anestor          ###   ########.fr       */
+/*   Updated: 2018/05/21 18:43:11 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
-
+/*
 int		check_map_x(t_flr *data, int x, char plr)
 {
 	int		y;
@@ -39,7 +39,7 @@ int		check_map_y(t_flr *data, int y, char plr)
 	}
 	return (0);
 }
-
+*/
 int		check_pc_w(t_flr *data, int x)
 {
 	int		y;

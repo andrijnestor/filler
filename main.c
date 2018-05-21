@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/09 19:35:30 by anestor           #+#    #+#             */
-/*   Updated: 2018/05/21 15:05:42 by anestor          ###   ########.fr       */
+/*   Updated: 2018/05/21 18:37:30 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,32 +93,28 @@ void	make_temp_result(t_flr *data, t_xyz *temp, int y, int x)
 	t_rect	r;
 
 	r = data->rect;
-	dprintf(3, "is seg here?\n");
 	if (data->e_map[y + r.y][x + r.x] < temp[0].z)
-	{
-		temp[0].x = x;
-		temp[0].y = y;
-		temp[0].z = data->e_map[y + r.y][x + r.x];
-	}
+		temp[0] = ft_xyz(x, y, data->e_map[y + r.y][x + r.x]);
 	if (data->e_map[y + r.y][x + r.x + r.w] < temp[1].z)
-	{
-		temp[1].x = x;
-		temp[1].y = y;
-		temp[1].z = data->e_map[y + r.y][x + r.x + r.w];
-	}
+		temp[1] = ft_xyz(x, y, data->e_map[y + r.y][x + r.x + r.w]);
 	if (data->e_map[y + r.y + r.h][x + r.x] < temp[2].z)
-	{
-		temp[2].x = x;
-		temp[2].y = y;
-		temp[2].z = data->e_map[y + r.y + r.h][x + r.x];
-	}
+		temp[2] = ft_xyz(x, y, data->e_map[y + r.y + r.h][x + r.x]);
 	if (data->e_map[y + r.y + r.h][x + r.x + r.w] < temp[3].z)
-	{
-		temp[3].x = x;
-		temp[3].y = y;
-		temp[3].z = data->e_map[y + r.y + r.h][x + r.x + r.w];
-	}
-	dprintf(3, "no its not\n");
+		temp[3] = ft_xyz(x, y, data->e_map[y + r.y + r.h][x + r.x + r.w]);
+}
+
+t_xyz	set_result(t_xyz *temp)
+{
+	t_xyz	result;
+
+	result = temp[0];
+	if (temp[1].z < result.z)
+		result = temp[1];
+	if (temp[2].z < result.z)
+		result = temp[2];
+	if (temp[3].z < result.z)
+		result = temp[3];
+	return (result);
 }
 
 void	make_result(t_flr *data)
@@ -127,10 +123,10 @@ void	make_result(t_flr *data)
 	t_xyz	temp[4];
 	t_rect	r;
 
-	temp[0] = ft_xyz(0, 0, 100000);
-	temp[1] = ft_xyz(0, 0, 100000);
-	temp[2] = ft_xyz(0, 0, 100000);
-	temp[3] = ft_xyz(0, 0, 100000);
+	temp[0] = ft_xyz(0, 0, INT_MAX);
+	temp[1] = ft_xyz(0, 0, INT_MAX);
+	temp[2] = ft_xyz(0, 0, INT_MAX);
+	temp[3] = ft_xyz(0, 0, INT_MAX);
 	r = data->rect;
 	i.y = -r.y;
 	while (i.y != data->mp_h - r.h)
@@ -144,47 +140,9 @@ void	make_result(t_flr *data)
 		}
 		i.y++;
 	}
-	data->result = temp[0];
-	if (temp[1].z < data->result.z)
-		data->result = temp[1];
-	if (temp[2].z < data->result.z)
-		data->result = temp[2];
-	if (temp[3].z < data->result.z)
-		data->result = temp[3];
+	data->result = set_result(temp);
 	dprintf(3, "x %d y %d z %d\n", data->result.x, data->result.y, data->result.z);
 }
-
-/*
-void	make_result(t_flr *data)
-{
-	t_xy	i;
-	t_xyz	temp;
-	t_rect	r;
-
-	temp = ft_xyz(0, 0, -1);
-	r = data->rect;
-	i.y = -r.y;
-	while (i.y != data->mp_h)
-	{
-		i.x = -r.x;
-		while (i.x != data->mp_w)
-		{
-			if (check_coord(data, i.x, i.y) == 1 &&
-					data->e_map[i.y + r.y + 1][i.x + r.x + 1] > temp.z)
-			{
-				temp.x = i.x;
-				temp.y = i.y;
-				temp.z = data->e_map[i.y + r.y + 1][i.x + r.x + 1];
-				dprintf(3, "x %d y %d z %d\n", temp.x, temp.y, temp.z);
-			}
-			i.x++;
-		}
-		i.y++;
-	}
-	data->result = temp;
-	dprintf(3, "x %d y %d z %d\n", data->result.x, data->result.y, data->result.z);
-}
-*/
 
 void	enemy_pos(t_flr *data)
 {
@@ -228,12 +186,10 @@ int		filler(void)
 		print_filler(data, fd); ///
 		make_enemy_map(data);
 		print_enemy_map(data, fd);
-		make_res(data);
-		
+		update_enemy_map(data);
 		print_enemy_map(data, fd);
 		make_result(data);
-	//	make_res(data);
-	//	clear_filler(data);
+		clear_filler(data);
 		dprintf(3, "%d %d\n", data->result.y, data->result.x);
 		dprintf(1, "%d %d\n", data->result.y, data->result.x);
 	}
