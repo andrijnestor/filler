@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/29 16:28:31 by anestor           #+#    #+#             */
-/*   Updated: 2018/05/21 18:21:20 by anestor          ###   ########.fr       */
+/*   Updated: 2018/05/22 15:43:30 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,13 +154,14 @@ void	make_enemy_map(t_flr *data)
 	i = find_highest_pos(data);
 	mnhtn_enemy_map(data, i);
 }
-
+/*
 void	calc_closest(t_xy place, t_xy offset, t_flr *data, int *len)
 {
 	t_xy	i;
 	char	enemy;
 	int		length;
 
+	length = 0;
 	enemy = (data->player == 0) ? PLR_2 : PLR_1;
 	i.y = YMO;
 	while (i.y != data->mp_h + YMO)
@@ -170,16 +171,18 @@ void	calc_closest(t_xy place, t_xy offset, t_flr *data, int *len)
 		{
 			if (data->map[i.y][i.x] == enemy)
 			{
-				length =
+				length +=
 					(ABS((i.y - YMO - (place.y + offset.y - data->rect.y)))) +
 					(ABS((i.x - XMO - (place.x + offset.x - data->rect.x))));
-				if (length <= *len)  /// <
-					*len = length;
+	//			if (length <= *len)  /// <
+	//				*len = length;
 			}
 			i.x++;
 		}
 		i.y++;
 	}
+	if (length <= *len)  /// <		
+		*len = length;
 }
 
 int		check_closest(t_xy place, t_flr *data)
@@ -202,22 +205,92 @@ int		check_closest(t_xy place, t_flr *data)
 	}
 	return (len);
 }
+*/
+
+int		calc_len(t_xy place, t_xy enemy, t_flr *data)
+{
+	t_xy	i;
+	int		len;
+
+	len = 0;
+	i.y = data->rect.y;
+	while (i.y != data->rect.y + data->rect.h)
+	{
+		i.x = data->rect.x;
+		while (i.x != data->rect.x + data->rect.w)
+		{
+			if (data->piece[i.y][i.x] == '*')
+			{
+				len +=
+					((ABS((place.y + i.y - (enemy.y - YMO)))) +
+					(ABS((place.x + i.x - (enemy.x - XMO)))));
+
+	//			dprintf(3, "x %d y %d len %d calc %d\n", i.x, i.y, len, calc);
+	//			dprintf(3, "place.y %d place.x %d enemy.y %d enemy.x %d\n", place.x, place.y,
+	//					enemy.x - XMO, enemy.y - YMO);
+			}
+			i.x++;
+		}
+		i.y++;
+	}
+	return (len);
+}
+
+/*
+** i == enemy on data->map
+*/
+
+void	find_enemy(t_xy place, t_flr *data)
+{
+	t_xy	i;
+	char	enemy;
+	int		len;
+
+	enemy = (data->player == 0) ? PLR_2 : PLR_1;
+	i.y = YMO;
+	while (i.y != data->mp_h + YMO)
+	{
+		i.x = XMO;
+		while (i.x != data->mp_w + XMO)
+		{
+			if (data->map[i.y][i.x] == enemy)
+			{
+				if ((len = calc_len(place, i, data)) < data->result.z)
+				{
+					data->result.z = len;
+					data->result.y = place.y;
+					data->result.x = place.x;
+				}
+			}
+			i.x++;
+		}
+		i.y++;
+	}
+}
+
+/*
+** i == place == result
+*/
 
 void	update_enemy_map(t_flr *data)
 {
 	t_xy	i;
 
+	data->result = ft_xyz(0, 0, INT_MAX);
 	i.y = -data->rect.y;
 	while (i.y != data->mp_h)
 	{
 		i.x = -data->rect.x;
 		while (i.x != data->mp_w)
 		{
+//			if (check_coord(data, i.x, i.y))
+//				if (check_closest(i, data) < 4)
+//					data->e_map[i.y + data->rect.y][i.x + data->rect.x] = 0;			
 			if (check_coord(data, i.x, i.y))
-				if (check_closest(i, data) < 4)
-					data->e_map[i.y + data->rect.y][i.x + data->rect.x] = 0;
+				find_enemy(i, data);
 			i.x++;
 		}
 		i.y++;
 	}
+	dprintf(3, "xyz x %d y %d z %d\n", data->result.x, data->result.y, data->result.z);
 }
