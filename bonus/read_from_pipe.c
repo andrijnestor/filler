@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:45:58 by anestor           #+#    #+#             */
-/*   Updated: 2018/04/01 21:21:14 by anestor          ###   ########.fr       */
+/*   Updated: 2018/05/22 18:52:35 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,10 @@ void		read_sub(t_data *d, char *line)
 	if (ft_strstr(line, "== O fin:"))
 	{
 		res = ft_atoi(line + 10);
-		dprintf(2, "%s\n", line); //
 	}
 	if (ft_strstr(line, "== X fin:"))
 	{
 		d->win = (res > ft_atoi(line + 10)) ? 1 : 2;
-		dprintf(2, "%s\n", line); //
 		render(d);
 		d->start = 0;
 		d->plr_rect = 0;

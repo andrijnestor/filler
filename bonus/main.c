@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/31 16:28:30 by anestor           #+#    #+#             */
-/*   Updated: 2018/04/01 19:59:01 by anestor          ###   ########.fr       */
+/*   Updated: 2018/05/22 18:54:31 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,6 @@ int		main(void)
 	d.btn[7].active = 1;
 	d.btn[10].active = 1;
 	render(&d);
-	sdl_loop(&d);	
+	sdl_loop(&d);
 	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/02/09 19:34:27 by anestor           #+#    #+#              #
-#    Updated: 2018/04/01 18:40:01 by anestor          ###   ########.fr        #
+#    Updated: 2018/05/22 18:51:35 by anestor          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ $(NAME): $(OBJ) $(EXT)
 
 obj/%.o: %.c $(EXT)
 	@mkdir -p $(OBJ_DIR)
-	@gcc $(FLAGS)  -c $< -o $@ $(LIBFT_INC) $(FWORK)
+	@gcc $(FLAGS) -c $< -o $@ $(LIBFT_INC) $(FWORK)
 	@echo "... compiling $< ..."
 
 clean:

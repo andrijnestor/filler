@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 12:44:20 by anestor           #+#    #+#             */
-/*   Updated: 2018/03/31 02:35:37 by anestor          ###   ########.fr       */
+/*   Updated: 2018/05/22 18:07:09 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,4 @@ void	clear_filler(t_flr *data)
 	while (i != data->pc_h)
 		ft_memdel((void **)&data->piece[i++]);
 	ft_memdel((void **)&data->piece);
-	ft_del_matrix(data->e_map, data->emp_h);
 }

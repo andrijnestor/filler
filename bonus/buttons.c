@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:49:39 by anestor           #+#    #+#             */
-/*   Updated: 2018/04/01 21:06:02 by anestor          ###   ########.fr       */
+/*   Updated: 2018/05/22 18:55:25 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void		button_render_copy(t_data *d)
 	}
 }
 
-void	buttons_init(t_data *d)
+void		buttons_init(t_data *d)
 {
 	button_textures_init_1(d);
 	button_textures_init_2(d);

@@ -6,13 +6,13 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:36:01 by anestor           #+#    #+#             */
-/*   Updated: 2018/04/01 19:32:09 by anestor          ###   ########.fr       */
+/*   Updated: 2018/05/22 18:55:14 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "bonus.h"
 
-int		sdl_init(t_sdl *sdl)
+int			sdl_init(t_sdl *sdl)
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING))
 		return_function("SDL init problem");
@@ -30,7 +30,7 @@ int		sdl_init(t_sdl *sdl)
 	return (1);
 }
 
-void	sdl_hook(t_data *d)
+void		sdl_hook(t_data *d)
 {
 	while (SDL_PollEvent(&d->sdl.event) != 0)
 	{
@@ -39,7 +39,7 @@ void	sdl_hook(t_data *d)
 		else if (d->sdl.event.type == SDL_KEYDOWN)
 		{
 			if (d->sdl.event.key.keysym.sym == SDLK_ESCAPE)
-			d->sdl.running = 0;
+				d->sdl.running = 0;
 		}
 		else if (d->sdl.event.type == SDL_MOUSEBUTTONDOWN)
 			mouse_down(d->sdl.event.button.x, d->sdl.event.button.y, d);
@@ -48,7 +48,7 @@ void	sdl_hook(t_data *d)
 	}
 }
 
-void	sdl_loop(t_data *d)
+void		sdl_loop(t_data *d)
 {
 	while (d->sdl.running)
 	{

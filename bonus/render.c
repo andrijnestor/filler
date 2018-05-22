@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/01 11:47:49 by anestor           #+#    #+#             */
-/*   Updated: 2018/04/01 21:21:13 by anestor          ###   ########.fr       */
+/*   Updated: 2018/05/22 19:31:50 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,18 @@ void	set_rect(t_data *d)
 	int		div;
 
 	if (d->mp_rect.h > d->mp_rect.w)
-		div = GAME_H / d->mp_rect.h;
+		div = (GAME_H) / d->mp_rect.h;
 	else
-		div = GAME_W / d->mp_rect.w;
+		div = (GAME_W) / d->mp_rect.w;
 	i.y = -1;
 	while (++i.y != d->mp_rect.h)
 	{
 		i.x = -1;
 		while (++i.x != d->mp_rect.w)
+		{
 			d->plr_r[i.y][i.x] =
 				sdl_rect(i.x * div + 50, i.y * div + 50, div, div);
+		}
 	}
 	d->plr_rect = 1;
 	d->p1 = -1;
@@ -42,7 +44,7 @@ void	win_render_copy(t_data *d)
 {
 	SDL_Rect	rect;
 
-	rect = sdl_rect(237, 335, BTN_H * 2, BTN_W * 2);
+	rect = sdl_rect(237, 335, (BTN_H) * 2, (BTN_W) * 2);
 	if (d->win == 1)
 		SDL_RenderCopy(d->sdl.renderer, d->btn[d->p1].tex_off, NULL, &rect);
 	else if (d->win == 2)

@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/08 22:57:59 by anestor           #+#    #+#             */
-/*   Updated: 2018/03/08 23:02:35 by anestor          ###   ########.fr       */
+/*   Updated: 2018/05/22 19:33:09 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int		**ft_make_matrix(int y, int x)
 
 	if (y < 1 || x < 1)
 		return (NULL);
-	if((tmp = ft_memalloc(sizeof(int *) * y)) == NULL)
+	if ((tmp = ft_memalloc(sizeof(int *) * y)) == NULL)
 		return (NULL);
 	i = 0;
 	while (i != y)
