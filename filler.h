@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/09 19:33:39 by anestor           #+#    #+#             */
-/*   Updated: 2018/05/21 18:42:51 by anestor          ###   ########.fr       */
+/*   Updated: 2018/05/22 16:22:26 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,9 @@ typedef struct	s_flr
 	char		**piece;
 	t_rect		rect;
 	t_xyz		result;
+	t_xyz		tmp_res;
 	t_xy		e_pos;
+	t_xy		a_pos;
 }				t_flr;
 
 /*

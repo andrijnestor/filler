@@ -6,7 +6,7 @@
 /*   By: anestor <anestor@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/29 16:28:31 by anestor           #+#    #+#             */
-/*   Updated: 2018/05/22 15:43:30 by anestor          ###   ########.fr       */
+/*   Updated: 2018/05/22 18:01:41 by anestor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,8 +151,8 @@ void	make_enemy_map(t_flr *data)
 		i.y++;
 	}
 	mnhtn_enemy(data);
-	i = find_highest_pos(data);
-	mnhtn_enemy_map(data, i);
+	data->a_pos = find_highest_pos(data);
+//	mnhtn_enemy_map(data, i);
 }
 /*
 void	calc_closest(t_xy place, t_xy offset, t_flr *data, int *len)
@@ -224,10 +224,6 @@ int		calc_len(t_xy place, t_xy enemy, t_flr *data)
 				len +=
 					((ABS((place.y + i.y - (enemy.y - YMO)))) +
 					(ABS((place.x + i.x - (enemy.x - XMO)))));
-
-	//			dprintf(3, "x %d y %d len %d calc %d\n", i.x, i.y, len, calc);
-	//			dprintf(3, "place.y %d place.x %d enemy.y %d enemy.x %d\n", place.x, place.y,
-	//					enemy.x - XMO, enemy.y - YMO);
 			}
 			i.x++;
 		}
@@ -266,6 +262,12 @@ void	find_enemy(t_xy place, t_flr *data)
 		}
 		i.y++;
 	}
+	if ((len = calc_len(place, ft_xy(data->emp_w / 2 + XMO, data->emp_h / 2 + YMO), data)) < data->tmp_res.z)
+	{
+		data->tmp_res.z = len;
+		data->tmp_res.y = place.y;
+		data->tmp_res.x = place.x;
+	}
 }
 
 /*
@@ -277,6 +279,7 @@ void	update_enemy_map(t_flr *data)
 	t_xy	i;
 
 	data->result = ft_xyz(0, 0, INT_MAX);
+	data->tmp_res = ft_xyz(0, 0, INT_MAX);
 	i.y = -data->rect.y;
 	while (i.y != data->mp_h)
 	{
@@ -292,5 +295,12 @@ void	update_enemy_map(t_flr *data)
 		}
 		i.y++;
 	}
+//	if (data->tmp_res.z <= data->result.z + 1)
+//		data->result = data->tmp_res;
+//	if (data->map[data->emp_h / 2 + YMO][data->emp_w / 2 + XMO] != (char)PLR_1 &&
+//		data->map[data->emp_h / 2 + YMO][data->emp_w / 2 + XMO] != (char)PLR_2)
+//		data->result = data->tmp_res;
 	dprintf(3, "xyz x %d y %d z %d\n", data->result.x, data->result.y, data->result.z);
+	dprintf(3, "xyz 2 x %d y %d z %d\n", data->tmp_res.x, data->tmp_res.y, data->tmp_res.z);
+	dprintf(3, "highest %d\n", data->e_map[data->a_pos.y][data->a_pos.x]);
 }
